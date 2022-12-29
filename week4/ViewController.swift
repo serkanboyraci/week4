@@ -25,10 +25,9 @@ class ViewController: UIViewController {
         let tcNo = tcNoTextField.text!
         contentTitleLabel.text = tcNo
     }
-    
-    extension ViewController: UITextFieldDelegate {
-        
-    }
-    
 }
 
+
+extension ViewController: UITextFieldDelegate {
+    
+}
