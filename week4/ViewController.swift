@@ -24,6 +24,12 @@ class ViewController: UIViewController {
 
     @IBAction func nextButtonClicked(_ sender: Any) {
         
+        let storyBoard = UIStoryboard.init(name: "Main", bundle: nil)
+        if let vc = storyBoard.instantiateViewController(withIdentifier: "TableViewController") as? TableViewController {
+            vc.modalPresentationStyle = .fullScreen // to see full screen TableViewVC
+            present(vc, animated: true)
+        }
+        
         let tcNo = tcNoTextField.text!
         contentTitleLabel.text = tcNo
     }
