@@ -11,11 +11,7 @@ class TableViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
     
-    private var users: [User] = [
-        .init(name: "Mucahit", id: "01"),
-        .init(name: "Serkan", id: "02" ),
-        .init(name: "Esra", id: "03")
-    ]
+    private var users: [User] = [] // in normal app, we have empty array and we take data lately
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,14 +22,18 @@ class TableViewController: UIViewController {
         
         tableView.separatorStyle = .none // to delete seperator between cells
         
+        tableView.register(.init(nibName: "UserCell", bundle: nil), forCellReuseIdentifier: "UserCellIdentifier")// we decide identifier name.
         
-        
-        
-
-        
+        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(3)) { // taking data and waiting
+            self.users = [
+                .init(name: "Mucahit", id: "01"),
+                .init(name: "Serkan", id: "02" ),
+                .init(name: "Esra", id: "03")
+                ]
+            
+            self.tableView.reloadData() // we must add this, to refresh data.
+        }
     }
-
-
 }
 
 extension TableViewController: UITableViewDelegate {
@@ -55,12 +55,18 @@ extension TableViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell()
+        let cell = tableView.dequeueReusableCell(withIdentifier: "UserCellIdentifier", for: indexPath) as! UserCell
+        
+        cell.userNameLabel.text = users[indexPath.row].name // we can reach XIB usernameLabel
+        
+        return cell
+        
+        /*let cell = UITableViewCell()
         
         
         let user = users[indexPath.row]
         cell.textLabel?.text = user.id + " - " + user.name
-        
+        */
         
         
         /*if indexPath.row % 2 == 1 {
@@ -72,7 +78,7 @@ extension TableViewController: UITableViewDataSource {
         //var content = cell.defaultContentConfiguration()
         //content.text = placeNameArray[indexPath.row]
         //cell.contentConfiguration  = content
-        return cell
+        //return cell
     }
 }
 
