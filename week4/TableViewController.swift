@@ -23,8 +23,8 @@ class TableViewController: UIViewController {
         tableView.separatorStyle = .none // to delete seperator between cells
         
         tableView.register(.init(nibName: "UserCell", bundle: nil), forCellReuseIdentifier: "UserCellIdentifier")// we decide identifier name.
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(3)) { // taking data and waiting
+     
+        /*DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(3)) { // taking data and waiting
             self.users = [
                 .init(name: "Mucahit", id: "01"),
                 .init(name: "Serkan", id: "02" ),
@@ -32,6 +32,29 @@ class TableViewController: UIViewController {
                 ]
             
             self.tableView.reloadData() // we must add this, to refresh data.
+        }*/
+    }
+    private func fetchData() {
+        if let url = URL(string: "https://api.coingecko.com/api/v3/coins/list") {
+            var request: URLRequest = .init(url: url)
+            request.httpMethod = "GET"
+            
+            let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+                if error != nil {
+                    return
+                }
+                
+                if let data = data {
+                    
+                    }
+                        
+                        
+
+
+                        
+                }
+            }
+  
         }
     }
 }
