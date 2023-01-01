@@ -11,7 +11,8 @@ class TableViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
     
-    private var users: [User] = [] // in normal app, we have empty array and we take data lately
+    private var coins: [Coin] = []
+    //private var users: [User] = [] // in normal app, we have empty array and we take data lately
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,6 +34,8 @@ class TableViewController: UIViewController {
             
             self.tableView.reloadData() // we must add this, to refresh data.
         }*/
+      
+        fetchData()
     }
     private func fetchData() {
         if let url = URL(string: "https://api.coingecko.com/api/v3/coins/list") {
@@ -45,42 +48,42 @@ class TableViewController: UIViewController {
                 }
                 
                 if let data = data {
-                    
+                  do {
+                    let coins = try
+                    JSONDecoder().decode([Coin].self, from: data) // we use JSONDecoder object a
+                    self.coins = coins
+                    DispatchQueue.main.async {
+                      self.tableView.reloadData()
                     }
-                        
-                        
-
-
-                        
+                  } catch {
+                    print("Decoding Error")
+                  }
                 }
             }
-  
-        }
+          task.resume() // we must use this, otherwise after a while code will not run.
+          }
     }
 }
 
 extension TableViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) { // you can select row.
-        let user = users[indexPath.row]
-        print("\(indexPath.row) - \(user.name)") // print its index 0,1,2
+        let coin = coins[indexPath.row]
+        print("\(indexPath.row) - \(coin.name ?? "")") // print its index 0,1,2
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 100
     }
-    
-    
-    
 }
+
 extension TableViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return users.count
+        return coins.count
     }
-    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "UserCellIdentifier", for: indexPath) as! UserCell
         
-        cell.userNameLabel.text = users[indexPath.row].name // we can reach XIB usernameLabel
+        cell.userNameLabel.text = coins[indexPath.row].name // we can reach XIB usernameLabel
         
         return cell
         
