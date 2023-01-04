@@ -50,13 +50,14 @@ class TableViewController: UIViewController {
                 if let data = data {
                   do {
                     let coins = try
-                    JSONDecoder().decode([Coin].self, from: data) // we use JSONDecoder object a
+                    JSONDecoder().decode([Coin].self, from: data) // we use JSONDecoder object as a Array, we use square bracket for Coin
                     self.coins = coins
-                    DispatchQueue.main.async {
+                    DispatchQueue.main.async { // we enter background thread,
+                      // if we want to UICompenent such as tableView, we must call from mainthread
                       self.tableView.reloadData()
                     }
                   } catch {
-                    print("Decoding Error")
+                    print("Decoding Error") //
                   }
                 }
             }
