@@ -44,7 +44,17 @@ class TableViewController: UIViewController {
             
             let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
                 if error != nil {
-                    return
+                  
+                  DispatchQueue.main.async {
+                    let alert = UIAlertController(title: "ERROR", message: error?.localizedDescription, preferredStyle: .alert)
+                    
+                    alert.addAction(.init(title: "OK", style: .default))
+                    alert.addAction(.init(title: "Retry", style: .default, handler: { _ in
+                      // TODO: navigate another screen
+                    }))
+                    self.present(alert, animated: true)
+                  }
+                  return
                 }
                 
                 if let data = data {
